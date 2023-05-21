@@ -81,7 +81,7 @@ class MessageOptions {
   /// Function to call when the user long press on a message
   final Function(ChatMessage)? onLongPressMessage;
 
-  final Function(DragStartDetails, ChatMessage)? onHorizontalDragStart;
+  final Function(DragUpdateDetails, ChatMessage)? onHorizontalDragStart;
 
   /// Function to call when the user press on a message
   final Function(ChatMessage)? onPressMessage;
