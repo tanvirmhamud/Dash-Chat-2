@@ -22,6 +22,8 @@ class MessageOptions {
     this.messageDecorationBuilder,
     this.top,
     this.bottom,
+    this.onPanStart,
+    this.onPanEnd,
     this.messageRowBuilder,
     this.messageTextBuilder,
     this.parsePatterns,
@@ -82,6 +84,8 @@ class MessageOptions {
   final Function(ChatMessage)? onLongPressMessage;
 
   final Function(DragUpdateDetails, ChatMessage)? onHorizontalDragStart;
+  final Function(DragStartDetails, ChatMessage)? onPanStart;
+  final Function(DragEndDetails, ChatMessage)? onPanEnd;
 
   /// Function to call when the user press on a message
   final Function(ChatMessage)? onPressMessage;
