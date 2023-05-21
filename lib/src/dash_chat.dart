@@ -12,6 +12,7 @@ class DashChat extends StatelessWidget {
     this.quickReplyOptions = const QuickReplyOptions(),
     this.scrollToBottomOptions = const ScrollToBottomOptions(),
     this.readOnly = false,
+    this.reaplychild,
     this.typingUsers,
     Key? key,
   }) : super(key: key);
@@ -39,6 +40,7 @@ class DashChat extends StatelessWidget {
 
   /// Options to customize the behaviour and design of the scroll-to-bottom button
   final ScrollToBottomOptions scrollToBottomOptions;
+  final Widget? reaplychild;
 
   /// Option to make the chat read only, it will hide the input field
   final bool readOnly;
@@ -64,6 +66,7 @@ class DashChat extends StatelessWidget {
         ),
         if (!readOnly)
           InputToolbar(
+            child2: reaplychild,
             inputOptions: inputOptions,
             currentUser: currentUser,
             onSend: onSend,
