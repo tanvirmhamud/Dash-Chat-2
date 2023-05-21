@@ -87,8 +87,8 @@ class MessageRow extends StatelessWidget {
             onPanStart: (details) =>
                 messageOptions.onPanStart!(details, message),
             onPanEnd: (details) => messageOptions.onPanEnd!(details, message),
-            onPanUpdate: (details) =>
-                messageOptions.onHorizontalDragStart!(details, message),
+            // onPanUpdate: (details) =>
+            //     messageOptions.onHorizontalDragStart!(details, message),
             // onHorizontalDragStart: (details) => messageOptions.onHorizontalDragStart!(details, message),
             onLongPress: messageOptions.onLongPressMessage != null
                 ? () => messageOptions.onLongPressMessage!(message)
