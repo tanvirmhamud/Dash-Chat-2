@@ -27,6 +27,7 @@ class MessageOptions {
     this.parsePatterns,
     this.textBeforeMedia = true,
     this.onTapMedia,
+    this.onHorizontalDragStart,
     this.showTime = false,
     this.timeFormat,
     this.messageTimeBuilder,
@@ -79,6 +80,8 @@ class MessageOptions {
 
   /// Function to call when the user long press on a message
   final Function(ChatMessage)? onLongPressMessage;
+
+  final Function(DragStartDetails, ChatMessage)? onHorizontalDragStart;
 
   /// Function to call when the user press on a message
   final Function(ChatMessage)? onPressMessage;

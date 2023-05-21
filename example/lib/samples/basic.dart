@@ -24,7 +24,9 @@ class BasicState extends State<Basic> {
           });
         },
         messages: messages,
+        messageOptions: MessageOptions(),
         messageListOptions: MessageListOptions(
+
           onLoadEarlier: () async {
             await Future.delayed(const Duration(seconds: 3));
           },
