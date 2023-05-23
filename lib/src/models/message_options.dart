@@ -22,17 +22,12 @@ class MessageOptions {
     this.messageDecorationBuilder,
     this.top,
     this.bottom,
-    this.onPanStart,
-    this.onPanEnd,
-    this.positionleft,
-    this.positionright,
     this.messageRowBuilder,
     this.messageTextBuilder,
-    this.duration,
+
     this.parsePatterns,
     this.textBeforeMedia = true,
     this.onTapMedia,
-    this.onHorizontalDragStart,
     this.showTime = false,
     this.timeFormat,
     this.messageTimeBuilder,
@@ -86,12 +81,6 @@ class MessageOptions {
   /// Function to call when the user long press on a message
   final Function(ChatMessage)? onLongPressMessage;
 
-  final Function(DragUpdateDetails, ChatMessage)? onHorizontalDragStart;
-  final Function(DragStartDetails, ChatMessage)? onPanStart;
-  final Function(DragEndDetails, ChatMessage)? onPanEnd;
-  final double? positionleft;
-  final double? positionright;
-  final Duration? duration;
 
   /// Function to call when the user press on a message
   final Function(ChatMessage)? onPressMessage;
