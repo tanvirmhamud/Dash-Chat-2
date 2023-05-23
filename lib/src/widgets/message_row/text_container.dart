@@ -1,7 +1,7 @@
 part of dash_chat_2;
 
 /// @nodoc
-class TextContainer extends StatelessWidget {
+class TextContainer extends StatefulWidget {
   const TextContainer({
     required this.message,
     this.messageOptions = const MessageOptions(),
@@ -14,6 +14,13 @@ class TextContainer extends StatelessWidget {
     this.isBeforeDateSeparator = false,
     this.messageTextBuilder,
     Key? key,
+    this.onHorizontalDragStart,
+    this.onPanStart,
+    this.onPanEnd,
+    this.positionleft,
+    this.positionright,
+    this.duration,
+    this.transform,
   }) : super(key: key);
 
   /// Options to customize the behaviour and design of the messages
@@ -42,6 +49,13 @@ class TextContainer extends StatelessWidget {
 
   /// If the message is before by a date separator
   final bool isBeforeDateSeparator;
+  final Function(DragUpdateDetails, ChatMessage)? onHorizontalDragStart;
+  final Function(DragStartDetails, ChatMessage)? onPanStart;
+  final Function(DragEndDetails, ChatMessage)? onPanEnd;
+  final double? positionleft;
+  final double? positionright;
+  final Duration? duration;
+  final Matrix4? transform;
 
   /// We could acces that from messageOptions but we want to reuse this widget
   /// for media and be able to override the text builder
@@ -49,40 +63,118 @@ class TextContainer extends StatelessWidget {
       messageTextBuilder;
 
   @override
+  State<TextContainer> createState() => _TextContainerState();
+}
+
+class _TextContainerState extends State<TextContainer>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    )..forward();
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: 50.0,
+    ).animate(_controller);
+
+    _controller.addListener(() {
+      // if (_controller.) {
+      //   movevalue = _animation.value;
+      // }
+      if (_controller.isAnimating && reverse == true) {
+        movevalue = _animation.value;
+        if (_controller.isCompleted) {
+          _controller.reset();
+          reverse = false;
+        }
+      }
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  bool reverse = false;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  double movevalue = 0.0;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: messageOptions.messageDecorationBuilder != null
-          ? messageOptions.messageDecorationBuilder!(
-              message, previousMessage, nextMessage)
-          : defaultMessageDecoration(
-              color: isOwnMessage
-                  ? messageOptions.currentUserContainerColor(context)
-                  : messageOptions.containerColor,
-              borderTopLeft:
-                  isPreviousSameAuthor && !isOwnMessage && !isAfterDateSeparator
-                      ? 0.0
-                      : messageOptions.borderRadius,
-              borderTopRight:
-                  isPreviousSameAuthor && isOwnMessage && !isAfterDateSeparator
-                      ? 0.0
-                      : messageOptions.borderRadius,
-              borderBottomLeft:
-                  !isOwnMessage && !isBeforeDateSeparator && isNextSameAuthor
-                      ? 0.0
-                      : messageOptions.borderRadius,
-              borderBottomRight:
-                  isOwnMessage && !isBeforeDateSeparator && isNextSameAuthor
-                      ? 0.0
-                      : messageOptions.borderRadius,
-            ),
-      padding: messageOptions.messagePadding,
-      child: messageTextBuilder != null
-          ? messageTextBuilder!(message, previousMessage, nextMessage)
-          : DefaultMessageText(
-              message: message,
-              isOwnMessage: isOwnMessage,
-              messageOptions: messageOptions,
-            ),
+    return GestureDetector(
+      onPanUpdate: (details) {
+        print(movevalue);
+        // Swiping in right direction.
+        setState(() {
+          if (movevalue <= 50.0) {
+            movevalue = details.delta.dx * movevalue + 5;
+          }
+        });
+      },
+      onPanStart: (details) {
+        setState(() {
+          _controller.forward();
+        });
+      },
+      onPanEnd: (details) {
+        setState(() {
+          reverse = true;
+        });
+        _controller.reverse();
+        widget.messageOptions.onPanEnd!(details, widget.message);
+
+        // print(_animation.value);
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        transform: Matrix4.translationValues(movevalue, 0, 0),
+        decoration: widget.messageOptions.messageDecorationBuilder != null
+            ? widget.messageOptions.messageDecorationBuilder!(
+                widget.message, widget.previousMessage, widget.nextMessage)
+            : defaultMessageDecoration(
+                color: widget.isOwnMessage
+                    ? widget.messageOptions.currentUserContainerColor(context)
+                    : widget.messageOptions.containerColor,
+                borderTopLeft: widget.isPreviousSameAuthor &&
+                        !widget.isOwnMessage &&
+                        !widget.isAfterDateSeparator
+                    ? 0.0
+                    : widget.messageOptions.borderRadius,
+                borderTopRight: widget.isPreviousSameAuthor &&
+                        widget.isOwnMessage &&
+                        !widget.isAfterDateSeparator
+                    ? 0.0
+                    : widget.messageOptions.borderRadius,
+                borderBottomLeft: !widget.isOwnMessage &&
+                        !widget.isBeforeDateSeparator &&
+                        widget.isNextSameAuthor
+                    ? 0.0
+                    : widget.messageOptions.borderRadius,
+                borderBottomRight: widget.isOwnMessage &&
+                        !widget.isBeforeDateSeparator &&
+                        widget.isNextSameAuthor
+                    ? 0.0
+                    : widget.messageOptions.borderRadius,
+              ),
+        padding: widget.messageOptions.messagePadding,
+        child: widget.messageTextBuilder != null
+            ? widget.messageTextBuilder!(
+                widget.message, widget.previousMessage, widget.nextMessage)
+            : DefaultMessageText(
+                message: widget.message,
+                isOwnMessage: widget.isOwnMessage,
+                messageOptions: widget.messageOptions,
+              ),
+      ),
     );
   }
 }

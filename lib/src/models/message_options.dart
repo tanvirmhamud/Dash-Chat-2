@@ -22,9 +22,16 @@ class MessageOptions {
     this.messageDecorationBuilder,
     this.top,
     this.bottom,
+    this.duration,
+    this.onHorizontalDragStart,
+    this.onPanEnd,
+    this.onPanStart,
+    this.positionleft,
+    this.positionright,
+    this.transform,
+    
     this.messageRowBuilder,
     this.messageTextBuilder,
-
     this.parsePatterns,
     this.textBeforeMedia = true,
     this.onTapMedia,
@@ -81,7 +88,6 @@ class MessageOptions {
   /// Function to call when the user long press on a message
   final Function(ChatMessage)? onLongPressMessage;
 
-
   /// Function to call when the user press on a message
   final Function(ChatMessage)? onPressMessage;
 
@@ -127,6 +133,14 @@ class MessageOptions {
   ///
   /// Default to: `Colors.black`
   final Color textColor;
+
+  final Function(DragUpdateDetails, ChatMessage)? onHorizontalDragStart;
+  final Function(DragStartDetails, ChatMessage)? onPanStart;
+  final Function(DragEndDetails, ChatMessage)? onPanEnd;
+  final double? positionleft;
+  final double? positionright;
+  final Duration? duration;
+  final Matrix4? transform;
 
   /// Color of other users time text in chat bubbles
   ///

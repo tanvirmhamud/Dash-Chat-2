@@ -1,7 +1,7 @@
 part of dash_chat_2;
 
 /// @nodoc
-class MessageRow extends StatelessWidget {
+class MessageRow extends StatefulWidget {
   const MessageRow({
     required this.message,
     required this.currentUser,
@@ -11,13 +11,7 @@ class MessageRow extends StatelessWidget {
     this.isBeforeDateSeparator = false,
     this.messageOptions = const MessageOptions(),
     Key? key,
-    this.onHorizontalDragStart,
-    this.onPanStart,
-    this.onPanEnd,
-    this.positionleft,
-    this.positionright,
-    this.duration,
-    this.transform,
+
   }) : super(key: key);
 
   /// Current message to show
@@ -41,75 +35,76 @@ class MessageRow extends StatelessWidget {
   /// Options to customize the behaviour and design of the messages
   final MessageOptions messageOptions;
 
-  final Function(DragUpdateDetails, ChatMessage)? onHorizontalDragStart;
-  final Function(DragStartDetails, ChatMessage)? onPanStart;
-  final Function(DragEndDetails, ChatMessage)? onPanEnd;
-  final double? positionleft;
-  final double? positionright;
-  final Duration? duration;
-  final Matrix4? transform;
 
+
+  @override
+  State<MessageRow> createState() => _MessageRowState();
+}
+
+class _MessageRowState extends State<MessageRow> with TickerProviderStateMixin {
   /// Get the avatar widget
   Widget getAvatar() {
-    return messageOptions.avatarBuilder != null
-        ? messageOptions.avatarBuilder!(
-            message.user,
-            messageOptions.onPressAvatar,
-            messageOptions.onLongPressAvatar,
+    return widget.messageOptions.avatarBuilder != null
+        ? widget.messageOptions.avatarBuilder!(
+            widget.message.user,
+            widget.messageOptions.onPressAvatar,
+            widget.messageOptions.onLongPressAvatar,
           )
         : DefaultAvatar(
-            user: message.user,
-            onLongPressAvatar: messageOptions.onLongPressAvatar,
-            onPressAvatar: messageOptions.onPressAvatar,
+            user: widget.message.user,
+            onLongPressAvatar: widget.messageOptions.onLongPressAvatar,
+            onPressAvatar: widget.messageOptions.onPressAvatar,
           );
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final bool isOwnMessage = message.user.id == currentUser.id;
+    final bool isOwnMessage = widget.message.user.id == widget.currentUser.id;
     bool isPreviousSameAuthor = false;
     bool isNextSameAuthor = false;
-    if (previousMessage != null &&
-        previousMessage!.user.id == message.user.id) {
+    if (widget.previousMessage != null &&
+        widget.previousMessage!.user.id == widget.message.user.id) {
       isPreviousSameAuthor = true;
     }
-    if (nextMessage != null && nextMessage!.user.id == message.user.id) {
+    if (widget.nextMessage != null &&
+        widget.nextMessage!.user.id == widget.message.user.id) {
       isNextSameAuthor = true;
     }
 
     return Container(
-      margin: isAfterDateSeparator
+      margin: widget.isAfterDateSeparator
           ? EdgeInsets.zero
           : isPreviousSameAuthor
-              ? messageOptions.marginSameAuthor
-              : messageOptions.marginDifferentAuthor,
+              ? widget.messageOptions.marginSameAuthor
+              : widget.messageOptions.marginDifferentAuthor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment:
             isOwnMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
-          if (messageOptions.showOtherUsersAvatar)
+          if (widget.messageOptions.showOtherUsersAvatar)
             Opacity(
-              opacity:
-                  !isOwnMessage && (!isNextSameAuthor || isBeforeDateSeparator)
-                      ? 1
-                      : 0,
+              opacity: !isOwnMessage &&
+                      (!isNextSameAuthor || widget.isBeforeDateSeparator)
+                  ? 1
+                  : 0,
               child: getAvatar(),
             ),
-          if (!messageOptions.showOtherUsersAvatar)
-            SizedBox(width: messageOptions.spaceWhenAvatarIsHidden),
+          if (!widget.messageOptions.showOtherUsersAvatar)
+            SizedBox(width: widget.messageOptions.spaceWhenAvatarIsHidden),
           GestureDetector(
-            onPanStart: (details) => onPanStart!(details, message),
-            onPanEnd: (details) => onPanEnd!(details, message),
-            onLongPress: messageOptions.onLongPressMessage != null
-                ? () => messageOptions.onLongPressMessage!(message)
+            
+            onLongPress: widget.messageOptions.onLongPressMessage != null
+                ? () =>
+                    widget.messageOptions.onLongPressMessage!(widget.message)
                 : null,
-            onTap: messageOptions.onPressMessage != null
-                ? () => messageOptions.onPressMessage!(message)
+            onTap: widget.messageOptions.onPressMessage != null
+                ? () => widget.messageOptions.onPressMessage!(widget.message)
                 : null,
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: messageOptions.maxWidth ??
+                maxWidth: widget.messageOptions.maxWidth ??
                     MediaQuery.of(context).size.width * 0.7,
               ),
               child: Column(
@@ -118,68 +113,72 @@ class MessageRow extends StatelessWidget {
                     : CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  if (messageOptions.top != null)
-                    messageOptions.top!(message, previousMessage, nextMessage),
+                  if (widget.messageOptions.top != null)
+                    widget.messageOptions.top!(widget.message,
+                        widget.previousMessage, widget.nextMessage),
                   if (!isOwnMessage &&
-                      messageOptions.showOtherUsersName &&
-                      (!isPreviousSameAuthor || isAfterDateSeparator))
-                    messageOptions.userNameBuilder != null
-                        ? messageOptions.userNameBuilder!(message.user)
-                        : DefaultUserName(user: message.user),
-                  if (message.medias != null &&
-                      message.medias!.isNotEmpty &&
-                      messageOptions.textBeforeMedia)
-                    messageOptions.messageMediaBuilder != null
-                        ? messageOptions.messageMediaBuilder!(
-                            message, previousMessage, nextMessage)
+                      widget.messageOptions.showOtherUsersName &&
+                      (!isPreviousSameAuthor || widget.isAfterDateSeparator))
+                    widget.messageOptions.userNameBuilder != null
+                        ? widget.messageOptions
+                            .userNameBuilder!(widget.message.user)
+                        : DefaultUserName(user: widget.message.user),
+                  if (widget.message.medias != null &&
+                      widget.message.medias!.isNotEmpty &&
+                      widget.messageOptions.textBeforeMedia)
+                    widget.messageOptions.messageMediaBuilder != null
+                        ? widget.messageOptions.messageMediaBuilder!(
+                            widget.message,
+                            widget.previousMessage,
+                            widget.nextMessage)
                         : MediaContainer(
-                            message: message,
+                            message: widget.message,
                             isOwnMessage: isOwnMessage,
-                            messageOptions: messageOptions,
+                            messageOptions: widget.messageOptions,
                           ),
-                  if (message.text.isNotEmpty)
-                    AnimatedContainer(
-                      duration: duration ?? Duration(seconds: 0),
-                      transform:
-                          transform ?? Matrix4.translationValues(0, 0, 0),
-                      child: TextContainer(
-                        messageOptions: messageOptions,
-                        message: message,
-                        previousMessage: previousMessage,
-                        nextMessage: nextMessage,
-                        isOwnMessage: isOwnMessage,
-                        isNextSameAuthor: isNextSameAuthor,
-                        isPreviousSameAuthor: isPreviousSameAuthor,
-                        isAfterDateSeparator: isAfterDateSeparator,
-                        isBeforeDateSeparator: isBeforeDateSeparator,
-                        messageTextBuilder: messageOptions.messageTextBuilder,
-                      ),
+                  if (widget.message.text.isNotEmpty)
+                    TextContainer(
+                      duration: widget.messageOptions.duration,
+                      
+                      messageOptions: widget.messageOptions,
+                      message: widget.message,
+                      previousMessage: widget.previousMessage,
+                      nextMessage: widget.nextMessage,
+                      isOwnMessage: isOwnMessage,
+                      isNextSameAuthor: isNextSameAuthor,
+                      isPreviousSameAuthor: isPreviousSameAuthor,
+                      isAfterDateSeparator: widget.isAfterDateSeparator,
+                      isBeforeDateSeparator: widget.isBeforeDateSeparator,
+                      messageTextBuilder:
+                          widget.messageOptions.messageTextBuilder,
                     ),
-                  if (message.medias != null &&
-                      message.medias!.isNotEmpty &&
-                      !messageOptions.textBeforeMedia)
-                    messageOptions.messageMediaBuilder != null
-                        ? messageOptions.messageMediaBuilder!(
-                            message, previousMessage, nextMessage)
+                  if (widget.message.medias != null &&
+                      widget.message.medias!.isNotEmpty &&
+                      !widget.messageOptions.textBeforeMedia)
+                    widget.messageOptions.messageMediaBuilder != null
+                        ? widget.messageOptions.messageMediaBuilder!(
+                            widget.message,
+                            widget.previousMessage,
+                            widget.nextMessage)
                         : MediaContainer(
-                            message: message,
+                            message: widget.message,
                             isOwnMessage: isOwnMessage,
-                            messageOptions: messageOptions,
+                            messageOptions: widget.messageOptions,
                           ),
-                  if (messageOptions.bottom != null)
-                    messageOptions.bottom!(
-                        message, previousMessage, nextMessage),
+                  if (widget.messageOptions.bottom != null)
+                    widget.messageOptions.bottom!(widget.message,
+                        widget.previousMessage, widget.nextMessage),
                 ],
               ),
             ),
           ),
-          if (messageOptions.showCurrentUserAvatar)
+          if (widget.messageOptions.showCurrentUserAvatar)
             Opacity(
               opacity: isOwnMessage && !isNextSameAuthor ? 1 : 0,
               child: getAvatar(),
             ),
-          if (!messageOptions.showCurrentUserAvatar)
-            SizedBox(width: messageOptions.spaceWhenAvatarIsHidden),
+          if (!widget.messageOptions.showCurrentUserAvatar)
+            SizedBox(width: widget.messageOptions.spaceWhenAvatarIsHidden),
         ],
       ),
     );
