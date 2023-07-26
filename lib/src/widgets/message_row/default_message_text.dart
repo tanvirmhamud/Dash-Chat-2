@@ -22,7 +22,7 @@ class DefaultMessageText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment:
-          isOwnMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          isOwnMessage ? CrossAxisAlignment.end : CrossAxisAlignment.end,
       children: <Widget>[
         Wrap(
           children: getMessage(context),

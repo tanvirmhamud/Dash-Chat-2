@@ -139,7 +139,6 @@ class _MessageRowState extends State<MessageRow> with TickerProviderStateMixin {
                   if (widget.message.text.isNotEmpty)
                     TextContainer(
                       duration: widget.messageOptions.duration,
-                      
                       messageOptions: widget.messageOptions,
                       message: widget.message,
                       previousMessage: widget.previousMessage,

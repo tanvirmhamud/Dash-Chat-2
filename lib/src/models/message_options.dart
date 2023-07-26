@@ -4,7 +4,7 @@ part of dash_chat_2;
 class MessageOptions {
   const MessageOptions({
     this.showCurrentUserAvatar = false,
-    this.showOtherUsersAvatar = true,
+    this.showOtherUsersAvatar = false,
     this.showOtherUsersName = true,
     this.userNameBuilder,
     this.avatarBuilder,
@@ -15,8 +15,8 @@ class MessageOptions {
     this.onPressMention,
     Color? currentUserContainerColor,
     Color? currentUserTextColor,
-    this.containerColor = const Color(0xFFF5F5F5),
-    this.textColor = Colors.black,
+    this.containerColor = const Color(0xFFF2F2F2),
+    this.textColor =  const Color(0xFf212427),
     this.messagePadding = const EdgeInsets.all(11),
     this.maxWidth,
     this.messageDecorationBuilder,
@@ -35,7 +35,7 @@ class MessageOptions {
     this.parsePatterns,
     this.textBeforeMedia = true,
     this.onTapMedia,
-    this.showTime = false,
+    this.showTime = true,
     this.timeFormat,
     this.messageTimeBuilder,
     this.messageMediaBuilder,
@@ -147,7 +147,7 @@ class MessageOptions {
   /// Default to: `textColor`
 
   Color timeTextColor() {
-    return _timeTextColor ?? textColor;
+    return _timeTextColor ?? textColor.withOpacity(0.25);
   }
 
   /// Used to calculate [timeTextColor]

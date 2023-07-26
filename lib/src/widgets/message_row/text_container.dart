@@ -110,31 +110,10 @@ class _TextContainerState extends State<TextContainer>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onPanUpdate: (details) {
-        print(movevalue);
-        // Swiping in right direction.
-        setState(() {
-          if (movevalue <= 50.0) {
-            movevalue = details.delta.dx * movevalue + 5;
-          }
-        });
-      },
-      onPanStart: (details) {
-        setState(() {
-          _controller.forward();
-        });
-      },
-      onPanEnd: (details) {
-        setState(() {
-          reverse = true;
-        });
-        _controller.reverse();
-        widget.messageOptions.onPanEnd!(details, widget.message);
-
-        // print(_animation.value);
-      },
-      child: AnimatedContainer(
+    return Stack(
+      fit: StackFit.loose,
+      children: [
+        AnimatedContainer(
         duration: Duration(milliseconds: 300),
         transform: Matrix4.translationValues(movevalue, 0, 0),
         decoration: widget.messageOptions.messageDecorationBuilder != null
@@ -175,6 +154,7 @@ class _TextContainerState extends State<TextContainer>
                 messageOptions: widget.messageOptions,
               ),
       ),
+      ],
     );
   }
 }
