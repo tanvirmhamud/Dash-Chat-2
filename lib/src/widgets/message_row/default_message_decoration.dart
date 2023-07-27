@@ -7,6 +7,7 @@ BoxDecoration defaultMessageDecoration({
   required double borderTopRight,
   required double borderBottomLeft,
   required double borderBottomRight,
+  required List<BoxShadow>? boxShadow,
 }) =>
     BoxDecoration(
       color: color,
@@ -16,4 +17,5 @@ BoxDecoration defaultMessageDecoration({
         bottomLeft: Radius.circular(borderBottomLeft),
         bottomRight: Radius.circular(borderBottomRight),
       ),
+      boxShadow: boxShadow
     );

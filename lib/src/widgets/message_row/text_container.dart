@@ -55,25 +55,32 @@ class TextContainer extends StatelessWidget {
           ? messageOptions.messageDecorationBuilder!(
               message, previousMessage, nextMessage)
           : defaultMessageDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 0,
+                offset: Offset(0.0, 0.5)
+              )
+            ],
               color: isOwnMessage
                   ? messageOptions.currentUserContainerColor(context)
                   : messageOptions.containerColor,
-              borderTopLeft:
-                  isPreviousSameAuthor && !isOwnMessage && !isAfterDateSeparator
-                      ? 0.0
-                      : messageOptions.borderRadius,
-              borderTopRight:
-                  isPreviousSameAuthor && isOwnMessage && !isAfterDateSeparator
-                      ? 0.0
-                      : messageOptions.borderRadius,
-              borderBottomLeft:
-                  !isOwnMessage && !isBeforeDateSeparator && isNextSameAuthor
-                      ? 0.0
-                      : messageOptions.borderRadius,
-              borderBottomRight:
-                  isOwnMessage && !isBeforeDateSeparator && isNextSameAuthor
-                      ? 0.0
-                      : messageOptions.borderRadius,
+              borderTopLeft:messageOptions.borderRadius,
+                  // isPreviousSameAuthor && !isOwnMessage && !isAfterDateSeparator
+                  //     ? 0.0
+                  //     : messageOptions.borderRadius,
+              borderTopRight:messageOptions.borderRadius,
+                  // isPreviousSameAuthor && isOwnMessage && !isAfterDateSeparator
+                  //     ? 0.0
+                  //     : messageOptions.borderRadius,
+              borderBottomLeft: messageOptions.borderRadius,
+                  // !isOwnMessage && !isBeforeDateSeparator && isNextSameAuthor
+                  //     ? 0.0
+                  //     : messageOptions.borderRadius,
+              borderBottomRight: messageOptions.borderRadius,
+                  // isOwnMessage && !isBeforeDateSeparator && isNextSameAuthor
+                  //     ? 0.0
+                  //     : messageOptions.borderRadius,
             ),
       padding: messageOptions.messagePadding,
       child: messageTextBuilder != null

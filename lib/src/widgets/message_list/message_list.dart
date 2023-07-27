@@ -86,6 +86,8 @@ class MessageListState extends State<MessageList> {
                       isBeforeDateSeparator = _shouldShowDateSeparator(
                           message, nextMessage, widget.messageListOptions);
                     }
+
+                    
                     return Column(
                       children: <Widget>[
                         if (isAfterDateSeparator)
@@ -107,6 +109,7 @@ class MessageListState extends State<MessageList> {
                           ),
                         ] else
                           MessageRow(
+                            messageindex: i,
                             message: widget.messages[i],
                             nextMessage: nextMessage,
                             previousMessage: previousMessage,

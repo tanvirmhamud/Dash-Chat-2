@@ -62,13 +62,26 @@ List<ChatMessage> allUsersSample = <ChatMessage>[
 
 List<ChatMessage> basicSample = <ChatMessage>[
   ChatMessage(
+    text: 'google.com hello you  is it &you okay?',
+    user: user2,
+    createdAt: DateTime.now(),
+  ),ChatMessage(
+    text: 'google.com hello you  is it &you okay?',
+    user: user2,
+    createdAt: DateTime.now(),
+  ),
+
+  ChatMessage(
     text: 'google.com hello you @Marc is it &you okay?',
     user: user2,
     createdAt: DateTime(2021, 01, 31, 16, 45),
-    mentions: [
-      Mention(title: '@Marc'),
-      Mention(title: '&you'),
-    ],
+  ),
+  
+  ChatMessage(
+    text: 'google.com hello you @Marc is it &you okay?',
+    user: user2,
+    createdAt: DateTime(2021, 01, 31, 16, 45),
+
   ),
   ChatMessage(
     text: 'google.com',

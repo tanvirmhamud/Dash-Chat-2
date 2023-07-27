@@ -24,11 +24,42 @@ class DefaultDateSeparator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Padding(
+    //   padding: padding,
+    //   child: Text(
+    //     _formatDateSeparator(date),
+    //     style: textStyle,
+    //   ),
+    // );
     return Padding(
-      padding: padding,
-      child: Text(
-        _formatDateSeparator(date),
-        style: textStyle,
+      padding: messageListOptions.containerpadding,
+      child: Container(
+        height: messageListOptions.datecontainerheight,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: messageListOptions.containercolor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              _formatDateSeparator(date),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: messageListOptions.fontSize,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w400,
+                letterSpacing: messageListOptions.letterSpacing,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -40,15 +71,16 @@ class DefaultDateSeparator extends StatelessWidget {
 
     final DateTime today = DateTime.now();
 
-    if (date.year != today.year) {
-      return intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
-    } else if (date.month != today.month ||
-        _getWeekOfYear(date) != _getWeekOfYear(today)) {
-      return intl.DateFormat('dd MMM HH:mm').format(date);
-    } else if (date.day != today.day) {
-      return intl.DateFormat('E HH:mm').format(date);
-    }
-    return intl.DateFormat('HH:mm').format(date);
+    // if (date.year != today.year) {
+    //   return intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
+    // } else if (date.month != today.month ||
+    //     _getWeekOfYear(date) != _getWeekOfYear(today)) {
+    //   return intl.DateFormat('dd MMM HH:mm').format(date);
+    // } else if (date.day != today.day) {
+    //   return intl.DateFormat('EEE HH:mm').format(date);
+    // }
+    // return intl.DateFormat('HH:mm').format(date);
+    return intl.DateFormat('EEE HH').format(date);
   }
 
   int _getWeekOfYear(DateTime date) {

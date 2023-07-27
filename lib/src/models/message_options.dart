@@ -4,8 +4,8 @@ part of dash_chat_2;
 class MessageOptions {
   const MessageOptions({
     this.showCurrentUserAvatar = false,
-    this.showOtherUsersAvatar = true,
-    this.showOtherUsersName = true,
+    this.showOtherUsersAvatar = false,
+    this.showOtherUsersName = false,
     this.userNameBuilder,
     this.avatarBuilder,
     this.onPressAvatar,
@@ -13,11 +13,14 @@ class MessageOptions {
     this.onLongPressMessage,
     this.onPressMessage,
     this.onPressMention,
-    Color? currentUserContainerColor,
+    this.letterSpacing = 0.50,
+    
+    Color? currentUserContainerColor = const Color(0xFF00A0DC),
     Color? currentUserTextColor,
-    this.containerColor = const Color(0xFFF5F5F5),
-    this.textColor = Colors.black,
-    this.messagePadding = const EdgeInsets.all(11),
+    this.containerColor = const Color(0xFFF2F2F2),
+    this.textColor =  Colors.black,
+    this.messagePadding =
+        const EdgeInsets.only(top: 6, left: 9, bottom: 6, right: 3),
     this.maxWidth,
     this.messageDecorationBuilder,
     this.top,
@@ -27,16 +30,16 @@ class MessageOptions {
     this.parsePatterns,
     this.textBeforeMedia = true,
     this.onTapMedia,
-    this.showTime = false,
+    this.showTime = true,
     this.timeFormat,
     this.messageTimeBuilder,
     this.messageMediaBuilder,
-    this.borderRadius = 18.0,
+    this.borderRadius = 8.0,
     Color? currentUserTimeTextColor,
-    this.marginDifferentAuthor = const EdgeInsets.only(top: 15),
+    this.marginDifferentAuthor = const EdgeInsets.only(top: 8),
     this.marginSameAuthor = const EdgeInsets.only(top: 2),
     this.spaceWhenAvatarIsHidden = 10.0,
-    this.timeFontSize = 10.0,
+    this.timeFontSize = 11.0,
     this.timePadding = const EdgeInsets.only(top: 5),
     Color? timeTextColor,
   })  : _currentUserContainerColor = currentUserContainerColor,
@@ -53,6 +56,10 @@ class MessageOptions {
 
   /// If you want to show the avatar of the current user
   final bool showCurrentUserAvatar;
+
+  final double? letterSpacing;
+
+  
 
   /// If you want to show the avatar of the other users
   final bool showOtherUsersAvatar;
@@ -131,7 +138,7 @@ class MessageOptions {
   /// Default to: `textColor`
 
   Color timeTextColor() {
-    return _timeTextColor ?? textColor;
+    return _timeTextColor ?? textColor.withOpacity(0.25);
   }
 
   /// Used to calculate [timeTextColor]

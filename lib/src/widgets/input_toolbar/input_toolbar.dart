@@ -6,6 +6,7 @@ class InputToolbar extends StatefulWidget {
     required this.currentUser,
     required this.onSend,
     this.inputOptions = const InputOptions(),
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -17,6 +18,7 @@ class InputToolbar extends StatefulWidget {
 
   /// Current user using the chat
   final ChatUser currentUser;
+  final GestureTapCallback? onTap;
 
   @override
   State<InputToolbar> createState() => InputToolbarState();
@@ -84,7 +86,7 @@ class InputToolbarState extends State<InputToolbar>
                   textCapitalization: widget.inputOptions.textCapitalization,
                   textInputAction: widget.inputOptions.textInputAction,
                   decoration: widget.inputOptions.inputDecoration ??
-                      defaultInputDecoration(),
+                      defaultInputDecoration(onTap: widget.onTap),
                   maxLength: widget.inputOptions.maxInputLength,
                   minLines: 1,
                   maxLines: widget.inputOptions.sendOnEnter

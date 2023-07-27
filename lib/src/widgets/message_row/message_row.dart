@@ -7,6 +7,7 @@ class MessageRow extends StatelessWidget {
     required this.currentUser,
     this.previousMessage,
     this.nextMessage,
+    required this.messageindex,
     this.isAfterDateSeparator = false,
     this.isBeforeDateSeparator = false,
     this.messageOptions = const MessageOptions(),
@@ -15,6 +16,8 @@ class MessageRow extends StatelessWidget {
 
   /// Current message to show
   final ChatMessage message;
+
+  final int messageindex;
 
   /// Previous message in the list
   final ChatMessage? previousMessage;
@@ -93,60 +96,166 @@ class MessageRow extends StatelessWidget {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: messageOptions.maxWidth ??
-                    MediaQuery.of(context).size.width * 0.7,
+                    MediaQuery.of(context).size.width * 0.8,
               ),
-              child: Column(
-                crossAxisAlignment: isOwnMessage
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  if (messageOptions.top != null)
-                    messageOptions.top!(message, previousMessage, nextMessage),
-                  if (!isOwnMessage &&
-                      messageOptions.showOtherUsersName &&
-                      (!isPreviousSameAuthor || isAfterDateSeparator))
-                    messageOptions.userNameBuilder != null
-                        ? messageOptions.userNameBuilder!(message.user)
-                        : DefaultUserName(user: message.user),
-                  if (message.medias != null &&
-                      message.medias!.isNotEmpty &&
-                      messageOptions.textBeforeMedia)
-                    messageOptions.messageMediaBuilder != null
-                        ? messageOptions.messageMediaBuilder!(
-                            message, previousMessage, nextMessage)
-                        : MediaContainer(
-                            message: message,
-                            isOwnMessage: isOwnMessage,
-                            messageOptions: messageOptions,
-                          ),
-                  if (message.text.isNotEmpty)
-                    TextContainer(
-                      messageOptions: messageOptions,
-                      message: message,
-                      previousMessage: previousMessage,
-                      nextMessage: nextMessage,
-                      isOwnMessage: isOwnMessage,
-                      isNextSameAuthor: isNextSameAuthor,
-                      isPreviousSameAuthor: isPreviousSameAuthor,
-                      isAfterDateSeparator: isAfterDateSeparator,
-                      isBeforeDateSeparator: isBeforeDateSeparator,
-                      messageTextBuilder: messageOptions.messageTextBuilder,
+              child: Stack(
+                fit: StackFit.loose,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: isOwnMessage ? 8 : 0,left: isOwnMessage ? 0 : 13),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: messageOptions.maxWidth ??
+                            MediaQuery.of(context).size.width * 0.68,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: isOwnMessage
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          if (messageOptions.top != null)
+                            messageOptions.top!(
+                                message, previousMessage, nextMessage),
+                          if (!isOwnMessage &&
+                              messageOptions.showOtherUsersName &&
+                              (!isPreviousSameAuthor || isAfterDateSeparator))
+                            messageOptions.userNameBuilder != null
+                                ? messageOptions.userNameBuilder!(message.user)
+                                : DefaultUserName(user: message.user),
+                          if (message.medias != null &&
+                              message.medias!.isNotEmpty &&
+                              messageOptions.textBeforeMedia)
+                            messageOptions.messageMediaBuilder != null
+                                ? messageOptions.messageMediaBuilder!(
+                                    message, previousMessage, nextMessage)
+                                : MediaContainer(
+                                    message: message,
+                                    isOwnMessage: isOwnMessage,
+                                    messageOptions: messageOptions,
+                                  ),
+                          if (message.text.isNotEmpty)
+                            TextContainer(
+                              messageOptions: messageOptions,
+                              message: message,
+                              previousMessage: previousMessage,
+                              nextMessage: nextMessage,
+                              isOwnMessage: isOwnMessage,
+                              isNextSameAuthor: isNextSameAuthor,
+                              isPreviousSameAuthor: isPreviousSameAuthor,
+                              isAfterDateSeparator: isAfterDateSeparator,
+                              isBeforeDateSeparator: isBeforeDateSeparator,
+                              messageTextBuilder:
+                                  messageOptions.messageTextBuilder,
+                            ),
+                          if (message.medias != null &&
+                              message.medias!.isNotEmpty &&
+                              !messageOptions.textBeforeMedia)
+                            messageOptions.messageMediaBuilder != null
+                                ? messageOptions.messageMediaBuilder!(
+                                    message, previousMessage, nextMessage)
+                                : MediaContainer(
+                                    message: message,
+                                    isOwnMessage: isOwnMessage,
+                                    messageOptions: messageOptions,
+                                  ),
+                          if (messageOptions.bottom != null)
+                            messageOptions.bottom!(
+                                message, previousMessage, nextMessage),
+                        ],
+                      ),
                     ),
-                  if (message.medias != null &&
-                      message.medias!.isNotEmpty &&
-                      !messageOptions.textBeforeMedia)
-                    messageOptions.messageMediaBuilder != null
-                        ? messageOptions.messageMediaBuilder!(
-                            message, previousMessage, nextMessage)
-                        : MediaContainer(
-                            message: message,
-                            isOwnMessage: isOwnMessage,
-                            messageOptions: messageOptions,
-                          ),
-                  if (messageOptions.bottom != null)
-                    messageOptions.bottom!(
-                        message, previousMessage, nextMessage),
+                  ),
+                  if (isPreviousSameAuthor && isOwnMessage && isAfterDateSeparator)
+                    Positioned(
+                      right: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector2.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
+
+                    if (isPreviousSameAuthor && isOwnMessage && isBeforeDateSeparator)
+                    Positioned(
+                      right: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector2.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
+
+                    if (isPreviousSameAuthor && isOwnMessage && !isAfterDateSeparator && messageindex == 0)
+                    Positioned(
+                      right: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector2.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
+                     if (!isPreviousSameAuthor && isOwnMessage && !isAfterDateSeparator && messageindex == 0)
+                    Positioned(
+                      right: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector2.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
+
+
+                    if (isPreviousSameAuthor && !isOwnMessage && !isAfterDateSeparator)
+                    Positioned(
+                      left: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector3.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
+
+                    if (isPreviousSameAuthor && !isOwnMessage && isBeforeDateSeparator)
+                    Positioned(
+                      left: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector3.svg",
+                        package: 'dash_chat_2',
+
+                      ),
+                    ),
+
+                    if (isPreviousSameAuthor && !isOwnMessage && !isAfterDateSeparator && messageindex == 0)
+                    Positioned(
+                      left: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector3.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
+                  
+                  if (isPreviousSameAuthor && !isOwnMessage && isAfterDateSeparator && messageindex == 0)
+                    Positioned(
+                      left: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector3.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
+
+                    if (!isNextSameAuthor && !isOwnMessage && isAfterDateSeparator)
+                    Positioned(
+                      left: 0,
+                      bottom: 5,
+                      child: SvgPicture.asset(
+                        "assets/Vector3.svg",
+                        package: 'dash_chat_2',
+                      ),
+                    ),
                 ],
               ),
             ),

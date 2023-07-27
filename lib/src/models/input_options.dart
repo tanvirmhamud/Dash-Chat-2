@@ -12,7 +12,7 @@ class InputOptions {
     this.inputDisabled = false,
     this.inputDecoration,
     this.textCapitalization = TextCapitalization.none,
-    this.alwaysShowSend = false,
+    this.alwaysShowSend = true,
     this.sendOnEnter = false,
     this.textInputAction,
     this.maxInputLength,
@@ -24,7 +24,7 @@ class InputOptions {
     this.inputMaxLines = 5,
     this.showTraillingBeforeSend = false,
     this.inputToolbarPadding = const EdgeInsets.all(8.0),
-    this.inputToolbarMargin = const EdgeInsets.only(top: 8.0),
+    this.inputToolbarMargin = const EdgeInsets.only(top: 0.0),
     this.cursorStyle = const CursorStyle(),
     this.autocorrect = true,
   });

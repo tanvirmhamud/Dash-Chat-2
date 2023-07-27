@@ -2,7 +2,7 @@ part of dash_chat_2;
 
 /// {@category Customization}
 class MessageListOptions {
-  const MessageListOptions({
+  const MessageListOptions( {
     this.showDateSeparator = true,
     this.dateSeparatorFormat,
     this.dateSeparatorBuilder,
@@ -14,6 +14,7 @@ class MessageListOptions {
     this.onLoadEarlier,
     this.typingBuilder,
     this.scrollPhysics,
+    this.datecontainerheight = 24, this.containercolor = const Color(0xFF00517B), this.fontSize = 14, this.letterSpacing = 1, this.containerpadding = const EdgeInsets.symmetric(vertical: 8),
   });
 
   /// If you want to who a date separator between messages of different dates
@@ -32,6 +33,12 @@ class MessageListOptions {
 
   /// Scroll controller of the list of message
   final ScrollController? scrollController;
+
+  final double datecontainerheight;
+  final Color  containercolor;
+  final double fontSize;
+  final double letterSpacing;
+  final EdgeInsetsGeometry containerpadding;
 
   /// A widget to show at the bottom of the chat
   /// (between the input and the chat content)
