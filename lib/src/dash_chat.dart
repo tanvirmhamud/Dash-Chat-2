@@ -1,5 +1,9 @@
 part of dash_chat_2;
 
+
+
+
+
 /// {@category Entry point}
 class DashChat extends StatelessWidget {
   const DashChat({
